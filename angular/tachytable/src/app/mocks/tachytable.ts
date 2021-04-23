@@ -34,6 +34,12 @@ export const ROWS = [
     header3: 'Cell 2.3',
     header4: 'Cell 2.4',
   },
+  {
+    header1: 'Cell 3.1',
+    header2: 'Cell 3.2',
+    header3: 'Cell 3.3',
+    header4: 'Cell 3.4',
+  },
 ];
 
 export const TABLE = {

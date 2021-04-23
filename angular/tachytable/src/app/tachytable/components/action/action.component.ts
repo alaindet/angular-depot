@@ -1,4 +1,4 @@
-import { Component, HostListener, Output, EventEmitter, Input, HostBinding } from '@angular/core';
+import { Component, HostListener, Input } from '@angular/core';
 
 import { TachyTableService } from '../../services';
 
@@ -13,15 +13,12 @@ export class TachyTableActionComponent {
   ) {}
 
   @Input() name: string = '';
-
-  @Output() clicked = new EventEmitter<string>();
-
-  @HostBinding('class.tac-table-action')
-  targetViaCss = true;
+  @Input() rowIndex: number = 0;
 
   @HostListener('click')
   onClick(): void {
-    this.clicked.emit(this.name);
-    this.tableService.actionClicked$.next(this.name);
+    const { name, rowIndex } = this;
+    const event = { name, rowIndex };
+    this.tableService.triggerRowAction(event);
   }
 }

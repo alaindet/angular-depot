@@ -1,8 +1,18 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
+
+import { TachyTableRowActionEvent } from '../types';
 
 @Injectable()
 export class TachyTableService {
-  actionNameClicked$ = new Subject<string>();
-  actionRowIndexClicked$ = new Subject<number>();
+
+  private rowAction$ = new Subject<TachyTableRowActionEvent>();
+
+  get rowAction(): Observable<TachyTableRowActionEvent> {
+    return this.rowAction$.asObservable();
+  }
+
+  triggerRowAction(event: TachyTableRowActionEvent): void {
+    this.rowAction$.next(event);
+  }
 }

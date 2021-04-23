@@ -1,7 +1,7 @@
-import { Component, ContentChildren, Input, TemplateRef, QueryList, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
 
 import { TachyTableService } from '../../services';
-import { TachyTableActionComponent } from '../action/action.component';
+import { TachyTableRowActionEvent } from '../../types';
 
 @Component({
   selector: 'tac-table',
@@ -26,13 +26,17 @@ import { TachyTableActionComponent } from '../action/action.component';
       </thead>
 
       <tbody>
-        <tr *ngFor="let row of rows" tacTableRow [withActions]="withActions">
+        <tr *ngFor="let row of rows; let rowIndex = index">
           <td *ngFor="let header of headers">
             {{ row[header.key] }}
           </td>
           <td *ngIf="withActions">
             <ng-container
               [ngTemplateOutlet]="withActions"
+              [ngTemplateOutletContext]="{
+                rowIndex: rowIndex,
+                row: row
+              }"
             ></ng-container>
           </td>
         </tr>
@@ -55,46 +59,15 @@ export class TachyTableComponent {
   @Input() rows: any = [];
   @Input() withActions: TemplateRef<any> | null = null;
 
-  @Output() actionClicked = new EventEmitter<{ name: string; rowIndex: number }>();
-
-  @ContentChildren(TachyTableActionComponent, { descendants: true })
-  private actions: QueryList<TachyTableActionComponent> | null = null;
-
-  private actionsQueried = false;
+  @Output() actionClicked = new EventEmitter<TachyTableRowActionEvent>();
 
   constructor(
-
+    private tableService: TachyTableService,
   ) {}
 
-  // ngAfterContentChecked(): void {
-
-  //   if (!this.withActions) {
-  //     return;
-  //   }
-
-  //   if (this.actionsQueried) {
-  //     return;
-  //   }
-
-  //   if (this.actions?.length === 0) {
-  //     return;
-  //   }
-
-  //   this.actionsQueried = true;
-  //   if (this.actions) {
-  //     this.subToActions(this.actions);
-  //   }
-  // }
-
-  // private subToActions(actions: QueryList<TachyTableActionComponent>): void {
-  //   actions.forEach(
-  //     action => action.clicked.subscribe(
-  //       name => {
-  //         const rowIndex = 1;
-  //         const event = { rowIndex, name };
-  //         console.log('action clicked', event);
-  //       }
-  //     )
-  //   );
-  // }
+  ngOnInit(): void {
+    this.tableService.rowAction.subscribe(event => {
+      console.log('rowAction', event);
+    });
+  }
 }
