@@ -1,1 +1,1 @@
-export * from './tachytable';
+export * from './movies';

@@ -1,32 +1,5 @@
 <h1>Tachy Table demo</h1>
 
-<tac-table
-  [headers]="TABLE.HEADERS"
-  [rows]="TABLE.ROWS"
-  [withActions]="actionsTemplate"
->
-  <ng-template #actionsTemplate let-rowIndex="rowIndex" let-row="row">
-
-    <tac-table-action name="action1" [rowIndex]="rowIndex">
-      <button>Action 1</button>
-    </tac-table-action>
-
-    <tac-table-action name="action2" [rowIndex]="rowIndex">
-      <button>Action 2</button>
-    </tac-table-action>
-
-    <!-- Conditional action based on row -->
-    <ng-container *ngIf="row.header1 !== 'Cell 3.1'">
-      <tac-table-action name="action3"[rowIndex]="rowIndex">
-        <button>Action 3</button>
-      </tac-table-action>
-    </ng-container>
-
-  </ng-template>
+<tac-table [headers]="TABLE.HEADERS" [rows]="TABLE.ROWS">
+  Table content
 </tac-table>
-
-<h2>TODO</h2>
-
-<ul>
-  <li>Remove rowIndex explicit binding from tac-table-action</li>
-</ul>

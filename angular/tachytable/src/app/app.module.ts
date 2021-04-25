@@ -10,6 +10,6 @@ import { TachyTableModule } from './tachytable';
     TachyTableModule,
   ],
   declarations: [AppComponent],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
