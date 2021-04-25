@@ -9,6 +9,8 @@ import * as components from './components';
   ],
   declarations: [
     components.TachyTableComponent,
+    components.TachyTableHeaderComponent,
+    components.TachyTableCellComponent,
   ],
   exports: [
     components.TachyTableComponent,

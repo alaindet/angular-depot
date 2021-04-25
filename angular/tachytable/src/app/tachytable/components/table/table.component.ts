@@ -9,7 +9,6 @@ export interface CssRules {
   styles: [`
     .table {
       display: grid;
-      /* TODO: Dynamic number of columns */
       grid-template-columns: repeat(6, 1fr);
       border-top: 1px solid #aaa;
       border-right: 1px solid #aaa;
@@ -21,12 +20,6 @@ export interface CssRules {
     }
     .even {
       background-color: #eee;
-    }
-    .odd + .even {
-      color: blue;
-    }
-    .even + .odd {
-      color: red;
     }
     .header {
       font-weight: bold;
@@ -58,20 +51,27 @@ export interface CssRules {
   `],
   template: `
     <div class="table" [ngStyle]="tableCss">
-      <ng-container *ngFor="let header of headers">
-        <div class="table-item header">{{ header.label }}</div>
-      </ng-container>
-      <ng-container *ngFor="let row of rows; let rowIndex = index; let even = even">
+
+      <tac-table-header
+        *ngFor="let header of headers"
+        [header]="header"
+      ></tac-table-header>
+
+      <ng-container *ngFor="
+        let row of rows;
+        let rowIndex = index;
+        let even = even;
+      ">
         <ng-container *ngFor="let header of headers">
-          <div
-            class="table-item cell {{ even ? 'even' : 'odd' }}"
-            attr.data-row="{{ rowIndex }}"
-            attr.data-header="{{ header.label }}: "
-          >
-            {{ row[header.key] }}
-          </div>
+          <tac-table-cell
+            [header]="header"
+            [value]="row[header.key]"
+            [rowIndex]="rowIndex"
+            [isEven]="even"
+          ></tac-table-cell>
         </ng-container>
       </ng-container>
+
     </div>
   `,
 })
