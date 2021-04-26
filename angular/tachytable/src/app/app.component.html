@@ -4,13 +4,20 @@
   [headers]="TABLE.HEADERS"
   [rows]="TABLE.ROWS"
   [actions]="actionsRef"
+  (actionClicked)="onActionClicked($event)"
 >
-  <ng-template #actionsRef>
-    <tac-table-action name="action1">
+  <ng-template #actionsRef let-rowIndex="rowIndex" let-row="row">
+    <tac-table-action [rowIndex]="rowIndex" name="action1">
       <button>Action 1</button>
     </tac-table-action>
-    <tac-table-action name="action2">
+    <tac-table-action [rowIndex]="rowIndex" name="action2">
       <button>Action 2</button>
     </tac-table-action>
+    <ng-container *ngIf="row['Year'] % 2 == 0">
+      <tac-table-action [rowIndex]="rowIndex" name="action3">
+        <button>Action 3</button>
+      </tac-table-action>
+    </ng-container>
   </ng-template>
+
 </tac-table>

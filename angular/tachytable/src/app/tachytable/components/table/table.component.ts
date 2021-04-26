@@ -1,4 +1,7 @@
-import { Component, Input, OnInit, TemplateRef } from '@angular/core';
+import { Component, ContentChildren, Input, OnInit, TemplateRef, QueryList, Output, EventEmitter } from '@angular/core';
+
+import { TachyTableActionComponent } from './../action/action.component';
+import { TachyTableActionEvent } from './../../types/action-event';
 
 export interface CssRules {
   [rule: string]: string;
@@ -77,6 +80,7 @@ export interface CssRules {
         <div *ngIf="actions" class="table-item cell {{ even ? 'even' : 'odd'">
           <tac-table-actions
             [actions]="actions"
+            [row]="row"
             [rowIndex]="rowIndex"
           ></tac-table-actions>
         </div>
@@ -91,10 +95,23 @@ export class TachyTableComponent implements OnInit {
   @Input() rows: any = [];
   @Input() actions?: TemplateRef<any>;
 
+  @Output() actionClicked = new EventEmitter<TachyTableActionEvent>();
+
+  @ContentChildren(TachyTableActionComponent, { descendants: true })
+  actionComponents?: QueryList<TachyTableActionComponent>;
+
   tableCss: CssRules = {};
 
   ngOnInit(): void {
     this.tableCss = this.buildTableCss();
+  }
+
+  ngAfterContentInit(): void {
+    this.actionComponents?.changes.subscribe(() => {
+      this.actionComponents?.forEach(action => {
+        action.clicked.subscribe(event => this.actionClicked.emit(event));
+      });
+    });
   }
 
   private buildTableCss(): CssRules {
