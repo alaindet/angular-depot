@@ -1,5 +1,16 @@
 <h1>Tachy Table demo</h1>
 
-<tac-table [headers]="TABLE.HEADERS" [rows]="TABLE.ROWS">
-  Table content
+<tac-table
+  [headers]="TABLE.HEADERS"
+  [rows]="TABLE.ROWS"
+  [actions]="actionsRef"
+>
+  <ng-template #actionsRef>
+    <tac-table-action name="action1">
+      <button>Action 1</button>
+    </tac-table-action>
+    <tac-table-action name="action2">
+      <button>Action 2</button>
+    </tac-table-action>
+  </ng-template>
 </tac-table>

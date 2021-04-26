@@ -11,9 +11,12 @@ import * as components from './components';
     components.TachyTableComponent,
     components.TachyTableHeaderComponent,
     components.TachyTableCellComponent,
+    components.TachyTableActionComponent,
+    components.TachyTableActionsComponent,
   ],
   exports: [
     components.TachyTableComponent,
+    components.TachyTableActionComponent,
   ],
 })
 export class TachyTableModule {}

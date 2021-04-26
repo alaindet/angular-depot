@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, TemplateRef } from '@angular/core';
 
 export interface CssRules {
   [rule: string]: string;
@@ -57,19 +57,29 @@ export interface CssRules {
         [header]="header"
       ></tac-table-header>
 
+      <div *ngIf="actions" class="table-item header">
+        Actions
+      </div>
+
       <ng-container *ngFor="
         let row of rows;
         let rowIndex = index;
         let even = even;
       ">
-        <ng-container *ngFor="let header of headers">
-          <tac-table-cell
-            [header]="header"
-            [value]="row[header.key]"
+        <tac-table-cell
+          *ngFor="let header of headers"
+          [header]="header"
+          [value]="row[header.key]"
+          [rowIndex]="rowIndex"
+          [isEven]="even"
+        ></tac-table-cell>
+
+        <div *ngIf="actions" class="table-item cell {{ even ? 'even' : 'odd'">
+          <tac-table-actions
+            [actions]="actions"
             [rowIndex]="rowIndex"
-            [isEven]="even"
-          ></tac-table-cell>
-        </ng-container>
+          ></tac-table-actions>
+        </div>
       </ng-container>
 
     </div>
@@ -79,6 +89,7 @@ export class TachyTableComponent implements OnInit {
 
   @Input() headers: any = [];
   @Input() rows: any = [];
+  @Input() actions?: TemplateRef<any>;
 
   tableCss: CssRules = {};
 
@@ -87,8 +98,9 @@ export class TachyTableComponent implements OnInit {
   }
 
   private buildTableCss(): CssRules {
+    const headersCount = this.headers.length + (this.actions ? 1 : 0);
     return {
-      'grid-template-columns': `repeat(${this.headers.length}, 1fr)`,
+      'grid-template-columns': `repeat(${headersCount}, 1fr)`,
     };
   }
 }
